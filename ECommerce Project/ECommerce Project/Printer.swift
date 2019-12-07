@@ -17,7 +17,6 @@ class Printer{
     let image: String
     let description: String
     let name: String
-    let id: Int
     
     init(){
         self.category = ""
@@ -27,10 +26,9 @@ class Printer{
         self.image = "Printer"
         self.description = ""
         self.name = ""
-        self.id = 0
     }
     
-    init(name: String, category: String, price: Double, latitude: Double, longitude: Double, imageName: String, description: String, id: Int){
+    init(name: String, category: String, price: Double, latitude: Double, longitude: Double, imageName: String, description: String){
         self.category = category
         self.price = price
         self.latitude = latitude
@@ -38,6 +36,5 @@ class Printer{
         self.image = imageName
         self.description = description
         self.name = name
-        self.id = id
     }
 }

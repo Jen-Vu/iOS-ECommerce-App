@@ -7,47 +7,57 @@
 //
 
 import UIKit
+import MapKit
 
 class PrinterDetailsController: UIViewController {
+    var cart = [Int]()
+    var printer: Printer?
+    var userDefaults = UserDefaults.standard
     
-    @IBOutlet weak var image: UIImageView!
+    @IBOutlet weak var printerImageView: UIImageView!
     @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var descriptionText: UITextView!
-    // @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var categoryLabel: UILabel!
+    // @IBOutlet weak var quantityField: UITextField!
     
-    var printer = Printer()
+    @IBAction func addToCrtButton(_ sender: Any) {
+        if userDefaults.array(forKey: "cart") == nil{
+            cart.append(printer!.id)
+            userDefaults.set(cart, forKey: "cart")
+        }else{
+            cart = userDefaults.array(forKey: "cart")  as? [Int] ?? [Int]()
+            cart.append(printer!.id)
+            userDefaults.removeObject(forKey: "cart")
+            userDefaults.set(cart, forKey: "cart")
+        }
+
+        userDefaults.synchronize()
+        
+        let alert = UIAlertController(title: nil, message: "Item added to cart!", preferredStyle: .alert)
+        self.present(alert, animated: true)
+        let alertTime = 0.4
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + alertTime){
+            alert.dismiss(animated: true)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let imageName = printer.image
-        image?.image = #imageLiteral(resourceName: imageName)
-        priceLabel?.text = String(printer.price)
-        nameLabel?.text = printer.name
-        descriptionText?.text = printer.description
- 
-        // Do any additional setup after loading the view.
+        // let imageName = printer.image
+        printerImageView.image = #imageLiteral(resourceName: printer!.image)
+        nameLabel.text = printer!.name
+        categoryLabel.text = printer!.category
+        descriptionTextView.text = printer!.description
+        priceLabel.text = "$" + String(printer!.price)
     }
     
-    /*
-    override func awake(withContext context: Any?) {
-        super.awake(withContext: context)
-        
-        if let printer = context as? Printer {
-            self.printer = printer
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "segueShowMap"){
+            let mapController = segue.destination as! MapController
+            mapController.longitude = printer?.longitude
+            mapController.latitude = printer?.latitude
         }
     }
-    */
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

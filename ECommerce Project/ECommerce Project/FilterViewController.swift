@@ -29,11 +29,9 @@ class FilterViewController: UITableViewController {
         case 4:
             return "Color"
         case 5:
-            return "Scanner"
+            return "Black"
         case 6:
             return "All-in-one"
-        case 7:
-            return "Fax"
         default:
             return "All categories"
         }
@@ -46,7 +44,7 @@ class FilterViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 8
+        return 7
     }
 
     
